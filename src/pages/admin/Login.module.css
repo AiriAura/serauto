@@ -1,0 +1,26 @@
+.page { min-height: 100vh; background: var(--color-dark); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.card { background: var(--color-dark2); border: 1px solid var(--color-border); border-radius: 16px; padding: 48px 40px; width: 100%; max-width: 420px; }
+.logo { font-family: var(--font-title); font-size: 28px; font-weight: 700; color: #fff; text-transform: uppercase; margin-bottom: 24px; }
+.logo span { color: var(--color-blue); }
+.logo small { font-size: 12px; font-weight: 600; color: var(--color-gray-mid); letter-spacing: 2px; margin-left: 6px; }
+.title { font-family: var(--font-title); font-size: 22px; font-weight: 700; color: #fff; text-transform: uppercase; margin-bottom: 6px; }
+.sub { font-size: 13px; color: var(--color-gray-mid); margin-bottom: 32px; }
+.form { display: flex; flex-direction: column; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); }
+.field input { background: rgba(255,255,255,0.05); border: 1px solid var(--color-border); border-radius: 8px; padding: 12px 16px; font-size: 14px; color: #fff; font-family: var(--font-body); outline: none; }
+.field input::placeholder { color: rgba(255,255,255,0.2); }
+.field input:focus { border-color: var(--color-blue); }
+.btn { font-size: 15px; font-weight: 600; color: #fff; background: var(--color-blue); padding: 13px; border-radius: 8px; margin-top: 4px; }
+.btn:hover:not(:disabled) { background: var(--color-blue-hover); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.back { display: block; text-align: center; margin-top: 24px; font-size: 13px; color: var(--color-gray-mid); }
+.back:hover { color: #fff; }
+.error {
+  background: rgba(255,69,96,0.1);
+  border: 1px solid rgba(255,69,96,0.3);
+  color: #FF4560;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}

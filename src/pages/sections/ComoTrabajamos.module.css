@@ -1,0 +1,14 @@
+.section { padding: var(--section-padding); background: var(--color-dark); }
+.inner { max-width: var(--max-width); margin: 0 auto; }
+.header { text-align: center; margin-bottom: 64px; }
+.eyebrow { font-size: 12px; font-weight: 600; color: var(--color-blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.title { font-family: var(--font-title); font-size: clamp(32px, 4vw, 52px); font-weight: 700; color: #fff; text-transform: uppercase; line-height: 1.05; }
+.title span { color: var(--color-blue); }
+.pasos { display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+.paso { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 16px; position: relative; }
+.num { font-family: var(--font-title); font-size: 22px; font-weight: 700; color: var(--color-blue); width: 72px; height: 72px; background: var(--color-blue-dim); border: 1px solid rgba(0,87,255,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+.line { position: absolute; top: 36px; left: calc(50% + 36px); width: calc(100% - 72px); height: 1px; background: linear-gradient(90deg, rgba(0,87,255,0.4), rgba(0,87,255,0.1)); }
+.pasoTitle { font-family: var(--font-title); font-size: 18px; font-weight: 700; color: #fff; text-transform: uppercase; margin-bottom: 8px; }
+.pasoDesc { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.6; }
+@media (max-width: 900px) { .pasos { grid-template-columns: repeat(3, 1fr); gap: 32px; } .line { display: none; } }
+@media (max-width: 600px) { .pasos { grid-template-columns: 1fr; } }

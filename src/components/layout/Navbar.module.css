@@ -1,0 +1,27 @@
+.header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--color-dark); border-bottom: 1px solid transparent; transition: border-color 0.3s, box-shadow 0.3s; }
+.scrolled { border-bottom-color: var(--color-border); box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+.nav { max-width: var(--max-width); margin: 0 auto; padding: 0 32px; height: var(--navbar-height); display: flex; align-items: center; justify-content: space-between; }
+.logo { display: flex; align-items: baseline; gap: 6px; }
+.logoText { font-family: var(--font-title); font-size: 26px; font-weight: 700; color: #fff; letter-spacing: -0.5px; text-transform: uppercase; }
+.logoAccent { color: var(--color-blue); }
+.logoSub { font-family: var(--font-title); font-size: 11px; font-weight: 600; color: var(--color-gray-mid); letter-spacing: 2px; }
+.links { display: flex; gap: 4px; }
+.link { font-size: 14px; font-weight: 500; color: var(--color-gray-mid); padding: 6px 14px; border-radius: 6px; transition: color 0.2s, background 0.2s; position: relative; }
+.link:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.link.active { color: #fff; }
+.link.active::after { content: ''; position: absolute; bottom: -2px; left: 14px; right: 14px; height: 2px; background: var(--color-blue); border-radius: 2px; }
+.actions { display: flex; align-items: center; gap: 16px; }
+.cta { font-size: 14px; font-weight: 600; color: #fff; background: var(--color-blue); padding: 10px 22px; border-radius: 8px; transition: background 0.2s, transform 0.15s; }
+.cta:hover { background: var(--color-blue-hover); transform: translateY(-1px); }
+.hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
+.bar { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+.b1 { transform: translateY(7px) rotate(45deg); }
+.b2 { opacity: 0; }
+.b3 { transform: translateY(-7px) rotate(-45deg); }
+.mobile { display: none; flex-direction: column; background: var(--color-dark); border-top: 1px solid var(--color-border); padding: 0 32px; max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.3s; }
+.mobileOpen { max-height: 500px; padding: 16px 32px 28px; }
+.mobileLink { font-size: 16px; font-weight: 500; color: var(--color-gray-mid); padding: 13px 0; border-bottom: 1px solid rgba(255,255,255,0.05); transition: color 0.2s; }
+.mobileLink:hover, .mobileLink.active { color: #fff; }
+.mobileCta { margin-top: 16px; font-size: 15px; font-weight: 600; color: #fff; background: var(--color-blue); padding: 13px 20px; border-radius: 8px; text-align: center; }
+.logoImg { height: 64px; width: auto; }
+@media (max-width: 768px) { .links { display: none; } .cta { display: none; } .hamburger { display: flex; } .mobile { display: flex; } }

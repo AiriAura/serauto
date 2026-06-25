@@ -1,0 +1,19 @@
+.footer { background: var(--color-dark); border-top: 1px solid var(--color-border); }
+.inner { max-width: var(--max-width); margin: 0 auto; padding: 64px 32px; display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 48px; }
+.logo { font-family: var(--font-title); font-size: 24px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: -0.5px; display: inline-block; margin-bottom: 16px; }
+.logo span { color: var(--color-blue); }
+.logo small { font-size: 11px; font-weight: 600; color: var(--color-gray-mid); letter-spacing: 2px; margin-left: 6px; vertical-align: middle; }
+.tagline { font-size: 14px; color: var(--color-gray-mid); line-height: 1.6; max-width: 280px; margin-bottom: 24px; }
+.social { display: flex; gap: 12px; }
+.social a { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--color-gray-mid); text-transform: uppercase; transition: border-color 0.2s, color 0.2s; }
+.social a:hover { border-color: var(--color-blue); color: var(--color-blue); }
+.col h4 { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px; }
+.col ul { display: flex; flex-direction: column; gap: 10px; }
+.col ul li a, .col ul li span { font-size: 14px; color: var(--color-gray-mid); transition: color 0.2s; }
+.col ul li a:hover { color: #fff; }
+.contact li { font-size: 13px; color: var(--color-gray-mid); line-height: 1.5; }
+.bottom { max-width: var(--max-width); margin: 0 auto; padding: 20px 32px; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.bottom p { font-size: 13px; color: var(--color-gray-mid); }
+.bottom a { color: var(--color-blue); }
+@media (max-width: 900px) { .inner { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .inner { grid-template-columns: 1fr; padding: 40px 20px; } .bottom { flex-direction: column; text-align: center; } }
