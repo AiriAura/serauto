@@ -103,10 +103,18 @@ export default function Contacto() {
                 <div className={styles.dato}><span>🕐</span><div><strong>Horarios</strong><p>Lun–Vie: 09:00–18:00<br/>Sáb: 09:00–13:00</p></div></div>
               </div>
             </div>
-            <div className={styles.mapPlaceholder}>
-              <span>🗺️</span>
-              <p>Av. Segunda Transversal 2600, Maipú</p>
-            </div>
+            <div className={styles.mapContainer}>
+  <iframe
+    src="https://www.google.com/maps?q=Av.+Segunda+Transversal+2600,+Maipú,+Santiago,+Chile&output=embed"
+    width="100%"
+    height="240"
+    style={{ border: 0, borderRadius: '16px' }}
+    allowFullScreen=""
+    loading="lazy"
+    referrerPolicy="no-referrer-when-downgrade"
+    title="Ubicación Serauto"
+  />
+</div>
           </div>
         </div>
       </section>

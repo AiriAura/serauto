@@ -32,3 +32,8 @@
 .mapPlaceholder span { font-size: 40px; }
 .mapPlaceholder p { font-size: 13px; color: #888; }
 @media (max-width: 900px) { .inner { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; } }
+.mapContainer {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--color-border-light);
+}
