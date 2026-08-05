@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { db } from '../lib/firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import styles from './Contacto.module.css'
 
 export default function Contacto() {
@@ -12,22 +13,22 @@ export default function Contacto() {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-
-    const { error } = await supabase
-      .from('cotizaciones')
-      .insert([{
-        nombre_cliente: form.nombre,
+    try {
+      await addDoc(collection(db, 'cotizaciones'), {
+        nombreCliente: form.nombre,
         email: form.email,
         telefono: form.telefono,
         empresa: form.empresa,
         mensaje: form.mensaje,
         tipo: form.tipo || 'contacto',
-        estado: 'nueva'
-      }])
-
+        estado: 'nueva',
+        createdAt: serverTimestamp()
+      })
+      setSent(true)
+    } catch (err) {
+      console.error(err)
+    }
     setLoading(false)
-    if (error) { console.error(error); return }
-    setSent(true)
   }
 
   return (
@@ -39,7 +40,6 @@ export default function Contacto() {
           <p className={styles.heroDesc}>Completa el formulario y te contactamos a la brevedad.</p>
         </div>
       </section>
-
       <section className={styles.section}>
         <div className={styles.inner}>
           <div className={styles.formWrap}>
@@ -91,7 +91,6 @@ export default function Contacto() {
               </form>
             )}
           </div>
-
           <div className={styles.info}>
             <div className={styles.infoCard}>
               <h3>Información de contacto</h3>
@@ -104,17 +103,17 @@ export default function Contacto() {
               </div>
             </div>
             <div className={styles.mapContainer}>
-  <iframe
-    src="https://www.google.com/maps?q=Av.+Segunda+Transversal+2600,+Maipú,+Santiago,+Chile&output=embed"
-    width="100%"
-    height="240"
-    style={{ border: 0, borderRadius: '16px' }}
-    allowFullScreen=""
-    loading="lazy"
-    referrerPolicy="no-referrer-when-downgrade"
-    title="Ubicación Serauto"
-  />
-</div>
+              <iframe
+                src="https://www.google.com/maps?q=Av.+Segunda+Transversal+2600,+Maipú,+Santiago,+Chile&output=embed"
+                width="100%"
+                height="240"
+                style={{ border: 0, borderRadius: '16px' }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Ubicación Serauto"
+              />
+            </div>
           </div>
         </div>
       </section>

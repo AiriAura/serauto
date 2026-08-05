@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { db } from '../../lib/firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import styles from './ContactoHome.module.css'
 
 export default function ContactoHome() {
@@ -12,22 +13,22 @@ export default function ContactoHome() {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-
-    const { error } = await supabase
-      .from('cotizaciones')
-      .insert([{
-        nombre_cliente: form.nombre,
+    try {
+      await addDoc(collection(db, 'cotizaciones'), {
+        nombreCliente: form.nombre,
         email: form.email,
         telefono: form.telefono,
         empresa: form.empresa,
         mensaje: form.mensaje,
         tipo: 'contacto',
-        estado: 'nueva'
-      }])
-
+        estado: 'nueva',
+        createdAt: serverTimestamp()
+      })
+      setSent(true)
+    } catch (err) {
+      console.error(err)
+    }
     setLoading(false)
-    if (error) { console.error(error); return }
-    setSent(true)
   }
 
   return (

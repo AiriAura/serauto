@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AdminLayout } from './Dashboard'
-import { supabase } from '../../lib/supabase'
+import { db } from '../../lib/firebase'
+import { collection, getDocs, doc, updateDoc, orderBy, query } from 'firebase/firestore'
 import styles from './Admin.module.css'
 
 export default function Cotizaciones() {
@@ -11,16 +12,17 @@ export default function Cotizaciones() {
 
   async function fetchCotizaciones() {
     setLoading(true)
-    const { data } = await supabase
-      .from('cotizaciones')
-      .select('*')
-      .order('created_at', { ascending: false })
-    setCotizaciones(data || [])
+    try {
+      const snap = await getDocs(query(collection(db, 'cotizaciones'), orderBy('createdAt', 'desc')))
+      setCotizaciones(snap.docs.map(d => ({ id: d.id, ...d.data() })))
+    } catch (err) {
+      console.error(err)
+    }
     setLoading(false)
   }
 
   async function marcarVista(id) {
-    await supabase.from('cotizaciones').update({ estado: 'vista' }).eq('id', id)
+    await updateDoc(doc(db, 'cotizaciones', id), { estado: 'vista' })
     fetchCotizaciones()
   }
 
@@ -41,8 +43,8 @@ export default function Cotizaciones() {
         cotizaciones.map(c => (
           <div key={c.id} className={styles.cotCard}>
             <div className={styles.cotInfo}>
-              <strong>{c.nombre_cliente} {c.empresa ? `— ${c.empresa}` : ''}</strong>
-              <span>{c.email} · {c.tipo} · {new Date(c.created_at).toLocaleDateString('es-CL')}</span>
+              <strong>{c.nombreCliente} {c.empresa ? `— ${c.empresa}` : ''}</strong>
+              <span>{c.email} · {c.tipo} · {c.createdAt?.toDate?.().toLocaleDateString('es-CL') || '—'}</span>
               {c.mensaje && <span style={{display:'block',marginTop:4,color:'rgba(255,255,255,0.3)',fontSize:13}}>{c.mensaje}</span>}
             </div>
             <div className={styles.cotMeta}>

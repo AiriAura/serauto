@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { supabase } from '../../lib/supabase'
+import { auth } from '../../lib/firebase'
+import { signOut } from 'firebase/auth'
 import styles from './Admin.module.css'
 
 const navItems = [
@@ -13,9 +14,10 @@ export function AdminLayout({ children, title }) {
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    await signOut(auth)
     navigate('/admin')
   }
+
   return (
     <div className={styles.layout}>
       <aside className={styles.sidebar}>
@@ -41,10 +43,10 @@ export function AdminLayout({ children, title }) {
 }
 
 const stats = [
-  { label: 'Productos activos',     value: '10', icon: '📦', color: '#0057FF' },
-  { label: 'Cotizaciones nuevas',   value: '3',  icon: '📋', color: '#00D47C' },
-  { label: 'Cotizaciones este mes', value: '18', icon: '📈', color: '#FFD100' },
-  { label: 'Categorías',            value: '6',  icon: '🗂️',  color: '#A855F7' },
+  { label: 'Productos activos',     value: '—', icon: '📦', color: '#0057FF' },
+  { label: 'Cotizaciones nuevas',   value: '—', icon: '📋', color: '#00D47C' },
+  { label: 'Cotizaciones este mes', value: '—', icon: '📈', color: '#FFD100' },
+  { label: 'Categorías',            value: '—', icon: '🗂️',  color: '#A855F7' },
 ]
 
 export default function Dashboard() {

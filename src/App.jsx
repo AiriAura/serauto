@@ -12,6 +12,7 @@ import Dashboard    from './pages/admin/Dashboard'
 import Productos    from './pages/admin/Productos'
 import Cotizaciones from './pages/admin/Cotizaciones'
 import ProtectedRoute from './components/ProtectedRoute'
+import ScrollToTop from './components/ScrollToTop'
 
 function PublicLayout({ children }) {
   return (
@@ -26,6 +27,7 @@ function PublicLayout({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/"          element={<PublicLayout><Home /></PublicLayout>} />
         <Route path="/servicios" element={<PublicLayout><Servicios /></PublicLayout>} />

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AdminLayout } from './Dashboard'
-import { supabase } from '../../lib/supabase'
+import { db } from '../../lib/firebase'
+import { collection, getDocs, doc, updateDoc, orderBy, query } from 'firebase/firestore'
 import styles from './Admin.module.css'
 
 export default function Productos() {
@@ -12,23 +13,24 @@ export default function Productos() {
 
   async function fetchProductos() {
     setLoading(true)
-    const { data } = await supabase
-      .from('productos')
-      .select('*, categorias(nombre)')
-      .order('created_at', { ascending: false })
-    setProductos(data || [])
+    try {
+      const snap = await getDocs(query(collection(db, 'productos'), orderBy('nombre')))
+      setProductos(snap.docs.map(d => ({ id: d.id, ...d.data() })))
+    } catch (err) {
+      console.error(err)
+    }
     setLoading(false)
   }
 
-  const filtrados = productos.filter(p =>
-    p.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-    p.sku.toLowerCase().includes(busqueda.toLowerCase())
-  )
-
   async function toggleActivo(id, activo) {
-    await supabase.from('productos').update({ activo: !activo }).eq('id', id)
+    await updateDoc(doc(db, 'productos', id), { activo: !activo })
     fetchProductos()
   }
+
+  const filtrados = productos.filter(p =>
+    p.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
+    p.sku?.toLowerCase().includes(busqueda.toLowerCase())
+  )
 
   return (
     <AdminLayout title="Productos">
@@ -44,6 +46,8 @@ export default function Productos() {
       </div>
       {loading ? (
         <p style={{color:'rgba(255,255,255,0.4)'}}>Cargando...</p>
+      ) : productos.length === 0 ? (
+        <p style={{color:'rgba(255,255,255,0.4)'}}>No hay productos cargados aún.</p>
       ) : (
         <table className={styles.table}>
           <thead>
@@ -60,7 +64,7 @@ export default function Productos() {
               <tr key={p.id}>
                 <td>{p.nombre}</td>
                 <td>{p.sku}</td>
-                <td>{p.categorias?.nombre}</td>
+                <td>{p.categoria}</td>
                 <td>
                   <span className={p.activo ? styles.badgeActive : styles.badgeInactive}>
                     {p.activo ? 'Activo' : 'Inactivo'}

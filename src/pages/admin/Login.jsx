@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../../lib/supabase'
+import { auth } from '../../lib/firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 import styles from './Login.module.css'
 
 export default function Login() {
@@ -15,20 +16,13 @@ export default function Login() {
     e.preventDefault()
     setLoading(true)
     setError('')
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    })
-
-    setLoading(false)
-
-    if (error) {
+    try {
+      await signInWithEmailAndPassword(auth, form.email, form.password)
+      navigate('/admin/dashboard')
+    } catch (err) {
       setError('Correo o contraseña incorrectos')
-      return
     }
-
-    navigate('/admin/dashboard')
+    setLoading(false)
   }
 
   return (

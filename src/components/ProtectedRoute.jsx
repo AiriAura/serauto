@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react'
 import { Navigate } from 'react-router-dom'
-import { supabase } from '../lib/supabase'
+import { auth } from '../lib/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
 
 export default function ProtectedRoute({ children }) {
-  const [session, setSession] = useState(null)
+  const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session)
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user)
       setLoading(false)
     })
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-    })
-
-    return () => listener.subscription.unsubscribe()
+    return () => unsubscribe()
   }, [])
 
   if (loading) {
@@ -35,7 +31,7 @@ export default function ProtectedRoute({ children }) {
     )
   }
 
-  if (!session) {
+  if (!user) {
     return <Navigate to="/admin" replace />
   }
 
