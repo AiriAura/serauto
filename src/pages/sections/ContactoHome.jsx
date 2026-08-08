@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { db } from '../../lib/firebase'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import styles from './ContactoHome.module.css'
 
 export default function ContactoHome() {
@@ -14,6 +12,9 @@ export default function ContactoHome() {
     e.preventDefault()
     setLoading(true)
     try {
+      // Dynamic import — Firebase only loads when user submits
+      const { db } = await import('../../lib/firebase')
+      const { collection, addDoc, serverTimestamp } = await import('firebase/firestore')
       await addDoc(collection(db, 'cotizaciones'), {
         nombreCliente: form.nombre,
         email: form.email,
@@ -39,28 +40,28 @@ export default function ContactoHome() {
           <h2 className={styles.title}>¿Listo para optimizar tu operación?</h2>
           <p className={styles.desc}>Completa el formulario y nuestro equipo te contactará a la brevedad.</p>
           <div className={styles.datos}>
-            <div className={styles.dato}><span>📞</span><div><strong>Teléfono</strong><p>+56 2 3123 4567</p></div></div>
-            <div className={styles.dato}><span>💬</span><div><strong>WhatsApp</strong><p>+56 9 1234 5678</p></div></div>
-            <div className={styles.dato}><span>✉️</span><div><strong>Email</strong><p>contacto@serauto.cl</p></div></div>
-            <div className={styles.dato}><span>📍</span><div><strong>Dirección</strong><p>Av. Segunda Transversal 2600, Maipú, Santiago</p></div></div>
+            <div className={styles.dato}><span aria-hidden="true">📞</span><div><strong>Teléfono</strong><p>+56 2 3123 4567</p></div></div>
+            <div className={styles.dato}><span aria-hidden="true">💬</span><div><strong>WhatsApp</strong><p>+56 9 1234 5678</p></div></div>
+            <div className={styles.dato}><span aria-hidden="true">✉️</span><div><strong>Email</strong><p>contacto@serauto.cl</p></div></div>
+            <div className={styles.dato}><span aria-hidden="true">📍</span><div><strong>Dirección</strong><p>Av. Segunda Transversal 2600, Maipú, Santiago</p></div></div>
             <div className={styles.dato}>
-              <span>🕐</span>
+              <span aria-hidden="true">🕐</span>
               <div>
                 <strong>Horarios</strong>
-                <p>Lun, Mar y Vie: 09:00–18:00<br/>Mié y Jue: 09:00–19:00</p>
+                <p>Lun, Mar y Vie: 09:00–18:00<br />Mié y Jue: 09:00–19:00</p>
               </div>
             </div>
           </div>
         </div>
         <div className={styles.right}>
           {sent ? (
-            <div className={styles.success}>
-              <span>✓</span>
+            <div className={styles.success} role="alert">
+              <span aria-hidden="true">✓</span>
               <h3>¡Mensaje enviado!</h3>
               <p>Nos contactaremos contigo a la brevedad.</p>
             </div>
           ) : (
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit} noValidate>
               <div className={styles.row}>
                 <div className={styles.field}>
                   <label htmlFor="ch-nombre">Nombre completo *</label>
@@ -85,7 +86,7 @@ export default function ContactoHome() {
                 <label htmlFor="ch-mensaje">Cuéntanos tu requerimiento *</label>
                 <textarea id="ch-mensaje" name="mensaje" value={form.mensaje} onChange={handleChange} required rows={4} placeholder="Describe el servicio o repuesto que necesitas..." />
               </div>
-              <button type="submit" className={styles.btn} disabled={loading}>
+              <button type="submit" className={styles.btn} disabled={loading} aria-busy={loading}>
                 {loading ? 'Enviando...' : 'Enviar mensaje →'}
               </button>
             </form>

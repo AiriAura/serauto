@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { db } from '../lib/firebase'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import styles from './Contacto.module.css'
 
 export default function Contacto() {
@@ -14,6 +12,8 @@ export default function Contacto() {
     e.preventDefault()
     setLoading(true)
     try {
+      const { db } = await import('../lib/firebase')
+      const { collection, addDoc, serverTimestamp } = await import('firebase/firestore')
       await addDoc(collection(db, 'cotizaciones'), {
         nombreCliente: form.nombre,
         email: form.email,
@@ -40,18 +40,17 @@ export default function Contacto() {
           <p className={styles.heroDesc}>Completa el formulario y te contactamos a la brevedad.</p>
         </div>
       </section>
-
       <section className={styles.section}>
         <div className={styles.inner}>
           <div className={styles.formWrap}>
             {sent ? (
-              <div className={styles.success}>
-                <span>✓</span>
-                <h3>¡Mensaje enviado!</h3>
+              <div className={styles.success} role="alert">
+                <span aria-hidden="true">✓</span>
+                <h2>¡Mensaje enviado!</h2>
                 <p>Nos contactaremos contigo pronto.</p>
               </div>
             ) : (
-              <form className={styles.form} onSubmit={handleSubmit}>
+              <form className={styles.form} onSubmit={handleSubmit} noValidate>
                 <h2 className={styles.formTitle}>Envíanos tu consulta</h2>
                 <div className={styles.row}>
                   <div className={styles.field}>
@@ -86,26 +85,25 @@ export default function Contacto() {
                   <label htmlFor="mensaje">Cuéntanos tu requerimiento *</label>
                   <textarea id="mensaje" name="mensaje" value={form.mensaje} onChange={handleChange} required rows={5} placeholder="Describe el servicio o repuesto que necesitas..." />
                 </div>
-                <button type="submit" className={styles.btn} disabled={loading}>
+                <button type="submit" className={styles.btn} disabled={loading} aria-busy={loading}>
                   {loading ? 'Enviando...' : 'Enviar mensaje →'}
                 </button>
               </form>
             )}
           </div>
-
           <div className={styles.info}>
             <div className={styles.infoCard}>
-              <h3>Información de contacto</h3>
+              <h2 className={styles.infoTitle}>Información de contacto</h2>
               <div className={styles.datos}>
-                <div className={styles.dato}><span>📍</span><div><strong>Dirección</strong><p>Av. Segunda Transversal 2600, Maipú, Santiago</p></div></div>
-                <div className={styles.dato}><span>📞</span><div><strong>Teléfono</strong><p>+56 2 3123 4567</p></div></div>
-                <div className={styles.dato}><span>💬</span><div><strong>WhatsApp</strong><p>+56 9 1234 5678</p></div></div>
-                <div className={styles.dato}><span>✉️</span><div><strong>Email</strong><p>contacto@serauto.cl</p></div></div>
+                <div className={styles.dato}><span aria-hidden="true">📍</span><div><strong>Dirección</strong><p>Av. Segunda Transversal 2600, Maipú, Santiago</p></div></div>
+                <div className={styles.dato}><span aria-hidden="true">📞</span><div><strong>Teléfono</strong><p>+56 2 3123 4567</p></div></div>
+                <div className={styles.dato}><span aria-hidden="true">💬</span><div><strong>WhatsApp</strong><p>+56 9 1234 5678</p></div></div>
+                <div className={styles.dato}><span aria-hidden="true">✉️</span><div><strong>Email</strong><p>contacto@serauto.cl</p></div></div>
                 <div className={styles.dato}>
-                  <span>🕐</span>
+                  <span aria-hidden="true">🕐</span>
                   <div>
                     <strong>Horarios</strong>
-                    <p>Lun, Mar y Vie: 09:00–18:00<br/>Mié y Jue: 09:00–19:00</p>
+                    <p>Lun, Mar y Vie: 09:00–18:00<br />Mié y Jue: 09:00–19:00</p>
                   </div>
                 </div>
               </div>
@@ -116,10 +114,10 @@ export default function Contacto() {
                 width="100%"
                 height="240"
                 style={{ border: 0, borderRadius: '16px' }}
-                allowFullScreen=""
+                allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Ubicación Serauto"
+                title="Ubicación Serauto LTDA en Maipú, Santiago"
               />
             </div>
           </div>

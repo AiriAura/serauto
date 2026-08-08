@@ -1,23 +1,21 @@
-@import '@fontsource/barlow-condensed/400.css';
-@import '@fontsource/barlow-condensed/600.css';
 @import '@fontsource/barlow-condensed/700.css';
 @import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
 @import '@fontsource/inter/600.css';
 
 :root {
-  --color-dark:       #0A0A0F;
-  --color-dark2:      #111118;
-  --color-dark3:      #1A1A24;
-  --color-blue:       #0057FF;
-  --color-blue-hover: #0040CC;
-  --color-blue-dim:   rgba(0, 87, 255, 0.12);
-  --color-white:      #FFFFFF;
-  --color-gray-light: #F4F6F9;
-  --color-gray-mid:   #6B6B7B;
-  --color-gray-text:  #444455;
-  --color-border:     rgba(255,255,255,0.07);
-  --color-border-light: #E2E8F0;
+  --color-dark:         #0A0A0F;
+  --color-dark2:        #111118;
+  --color-dark3:        #1A1A24;
+  --color-blue:         #0057FF;
+  --color-blue-hover:   #0040CC;
+  --color-blue-dim:     rgba(0, 87, 255, 0.12);
+  --color-white:        #FFFFFF;
+  --color-gray-light:   #F4F6F9;
+  --color-gray-mid:     #767686;   /* was #8A8A9A - bumped for contrast */
+  --color-gray-text:    #3D3D4D;   /* body text on light bg */
+  --color-muted-dark:   #A0A0B8;   /* text on dark bg - WCAG AA */
+  --color-border:       rgba(255,255,255,0.08);
+  --color-border-light: #DDE3EC;
   --font-title: 'Barlow Condensed', sans-serif;
   --font-body:  'Inter', sans-serif;
   --navbar-height: 72px;
@@ -36,41 +34,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
-a {
-  text-decoration: none;
-  color: inherit;
-}
-a:focus-visible {
+a { text-decoration: none; color: inherit; }
+a:focus-visible, button:focus-visible {
   outline: 2px solid var(--color-blue);
   outline-offset: 2px;
   border-radius: 2px;
 }
-button {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-family: inherit;
-}
-button:focus-visible {
-  outline: 2px solid var(--color-blue);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
 ul { list-style: none; }
-
-/* Skip to main content for accessibility */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 0;
-  background: var(--color-blue);
-  color: white;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  z-index: 9999;
-  border-radius: 0 0 8px 0;
-}
-.skip-link:focus {
-  top: 0;
-}

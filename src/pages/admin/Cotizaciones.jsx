@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import { AdminLayout } from './Dashboard'
-import { db } from '../../lib/firebase'
-import { collection, getDocs, doc, updateDoc, orderBy, query } from 'firebase/firestore'
 import styles from './Admin.module.css'
 
 export default function Cotizaciones() {
@@ -13,6 +11,8 @@ export default function Cotizaciones() {
   async function fetchCotizaciones() {
     setLoading(true)
     try {
+      const { db } = await import('../../lib/firebase')
+      const { collection, getDocs, orderBy, query } = await import('firebase/firestore')
       const snap = await getDocs(query(collection(db, 'cotizaciones'), orderBy('createdAt', 'desc')))
       setCotizaciones(snap.docs.map(d => ({ id: d.id, ...d.data() })))
     } catch (err) {
@@ -22,6 +22,8 @@ export default function Cotizaciones() {
   }
 
   async function marcarVista(id) {
+    const { db } = await import('../../lib/firebase')
+    const { doc, updateDoc } = await import('firebase/firestore')
     await updateDoc(doc(db, 'cotizaciones', id), { estado: 'vista' })
     fetchCotizaciones()
   }
@@ -31,19 +33,19 @@ export default function Cotizaciones() {
   return (
     <AdminLayout title="Cotizaciones">
       <div className={styles.toolbar}>
-        <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>
+        <p role="status" style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>
           {nuevas} cotización{nuevas !== 1 ? 'es' : ''} nueva{nuevas !== 1 ? 's' : ''}
-        </span>
+        </p>
       </div>
       {loading ? (
-        <p style={{color:'rgba(255,255,255,0.4)'}}>Cargando...</p>
+        <p style={{color:'rgba(255,255,255,0.4)'}} role="status">Cargando...</p>
       ) : cotizaciones.length === 0 ? (
         <p style={{color:'rgba(255,255,255,0.4)'}}>No hay cotizaciones todavía.</p>
       ) : (
         cotizaciones.map(c => (
           <div key={c.id} className={styles.cotCard}>
             <div className={styles.cotInfo}>
-              <strong>{c.nombreCliente} {c.empresa ? `— ${c.empresa}` : ''}</strong>
+              <strong>{c.nombreCliente}{c.empresa ? ` — ${c.empresa}` : ''}</strong>
               <span>{c.email} · {c.tipo} · {c.createdAt?.toDate?.().toLocaleDateString('es-CL') || '—'}</span>
               {c.mensaje && <span style={{display:'block',marginTop:4,color:'rgba(255,255,255,0.3)',fontSize:13}}>{c.mensaje}</span>}
             </div>

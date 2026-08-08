@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import { AdminLayout } from './Dashboard'
-import { db } from '../../lib/firebase'
-import { collection, getDocs, doc, updateDoc, orderBy, query } from 'firebase/firestore'
 import styles from './Admin.module.css'
 
 export default function Productos() {
@@ -14,6 +12,8 @@ export default function Productos() {
   async function fetchProductos() {
     setLoading(true)
     try {
+      const { db } = await import('../../lib/firebase')
+      const { collection, getDocs, orderBy, query } = await import('firebase/firestore')
       const snap = await getDocs(query(collection(db, 'productos'), orderBy('nombre')))
       setProductos(snap.docs.map(d => ({ id: d.id, ...d.data() })))
     } catch (err) {
@@ -23,6 +23,8 @@ export default function Productos() {
   }
 
   async function toggleActivo(id, activo) {
+    const { db } = await import('../../lib/firebase')
+    const { doc, updateDoc } = await import('firebase/firestore')
     await updateDoc(doc(db, 'productos', id), { activo: !activo })
     fetchProductos()
   }
@@ -36,27 +38,28 @@ export default function Productos() {
     <AdminLayout title="Productos">
       <div className={styles.toolbar}>
         <input
-          type="text"
+          type="search"
           placeholder="Buscar producto o SKU..."
           value={busqueda}
           onChange={e => setBusqueda(e.target.value)}
           className={styles.searchInput}
+          aria-label="Buscar producto"
         />
         <button className={styles.addBtn}>+ Agregar producto</button>
       </div>
       {loading ? (
-        <p style={{color:'rgba(255,255,255,0.4)'}}>Cargando...</p>
+        <p style={{color:'rgba(255,255,255,0.4)'}} role="status">Cargando...</p>
       ) : productos.length === 0 ? (
         <p style={{color:'rgba(255,255,255,0.4)'}}>No hay productos cargados aún.</p>
       ) : (
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>SKU</th>
-              <th>Categoría</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">SKU</th>
+              <th scope="col">Categoría</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acciones</th>
             </tr>
           </thead>
           <tbody>
