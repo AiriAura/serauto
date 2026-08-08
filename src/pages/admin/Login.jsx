@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../lib/firebaseAuth'
+import { auth } from '../../lib/firebaseAuth.js'
 import styles from './Login.module.css'
 
 export default function Login() {

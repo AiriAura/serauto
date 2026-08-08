@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { auth } from '../../lib/firebase'
+import { auth } from '../../lib/firebaseAuth.js'
 import { signOut } from 'firebase/auth'
 import styles from './Admin.module.css'
 
