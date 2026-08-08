@@ -6,11 +6,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'firebase-app': ['firebase/app'],
-          'firebase-auth': ['firebase/auth'],
-          'firebase-firestore': ['firebase/firestore'],
+        manualChunks(id) {
+          if (id.includes('firebase/auth')) return 'firebase-auth'
+          if (id.includes('firebase/firestore')) return 'firebase-firestore'
+          if (id.includes('firebase')) return 'firebase-app'
+          if (id.includes('react-router-dom')) return 'router'
+          if (id.includes('node_modules')) return 'vendor'
         }
       }
     },
