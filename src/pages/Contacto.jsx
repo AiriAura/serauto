@@ -40,6 +40,7 @@ export default function Contacto() {
           <p className={styles.heroDesc}>Completa el formulario y te contactamos a la brevedad.</p>
         </div>
       </section>
+
       <section className={styles.section}>
         <div className={styles.inner}>
           <div className={styles.formWrap}>
@@ -91,6 +92,7 @@ export default function Contacto() {
               </form>
             )}
           </div>
+
           <div className={styles.info}>
             <div className={styles.infoCard}>
               <h3>Información de contacto</h3>
@@ -99,7 +101,13 @@ export default function Contacto() {
                 <div className={styles.dato}><span>📞</span><div><strong>Teléfono</strong><p>+56 2 3123 4567</p></div></div>
                 <div className={styles.dato}><span>💬</span><div><strong>WhatsApp</strong><p>+56 9 1234 5678</p></div></div>
                 <div className={styles.dato}><span>✉️</span><div><strong>Email</strong><p>contacto@serauto.cl</p></div></div>
-                <div className={styles.dato}><span>🕐</span><div><strong>Horarios</strong><p>Lun–Vie: 09:00–18:00<br/>Sáb: 09:00–13:00</p></div></div>
+                <div className={styles.dato}>
+                  <span>🕐</span>
+                  <div>
+                    <strong>Horarios</strong>
+                    <p>Lun, Mar y Vie: 09:00–18:00<br/>Mié y Jue: 09:00–19:00</p>
+                  </div>
+                </div>
               </div>
             </div>
             <div className={styles.mapContainer}>

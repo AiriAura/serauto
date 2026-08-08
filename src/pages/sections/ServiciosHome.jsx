@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom'
 import styles from './ServiciosHome.module.css'
 
 const servicios = [
-  { icon: '⚡', title: 'Sistemas Eléctricos', desc: 'Diagnóstico y reparación de sistemas eléctricos en maquinaria y camiones.' },
-  { icon: '❄️', title: 'Aire Acondicionado', desc: 'Mantención, reparación y recarga de sistemas de climatización vehicular.' },
-  { icon: '🔬', title: 'Diagnóstico Electrónico', desc: 'Escaneo avanzado, diagnóstico y programación de módulos.' },
-  { icon: '🔧', title: 'Partidores y Alternadores', desc: 'Reparación y reconstrucción de motores de partida y alternadores.' },
-  { icon: '🔋', title: 'Sistemas de Carga', desc: 'Revisión y reparación de sistemas de carga y baterías.' },
-  { icon: '📋', title: 'Mantención Preventiva', desc: 'Planes de mantención preventiva para reducir fallas y tiempos de paro.' },
+  { icon: '⚡', title: 'Electricidad Automotriz', desc: 'Diagnóstico y reparación de sistemas eléctricos en vehículos livianos, camiones y maquinaria.' },
+  { icon: '❄️', title: 'Aire Acondicionado', desc: 'Mantención, diagnóstico y reparación de sistemas de climatización con refrigerante R134a.' },
+  { icon: '🏗️', title: 'Maquinaria y Minería', desc: 'Servicios especializados para flotas, transporte, minería y maquinaria pesada.' },
+  { icon: '📋', title: 'Mantención Preventiva', desc: 'Mantenciones programadas para empresas y flotas, con informes técnicos y presupuestos.' },
+  { icon: '🔧', title: 'Venta de Repuestos', desc: 'Repuestos eléctricos y de climatización con asesoría técnica especializada.' },
+  { icon: '🖥️', title: 'Diagnóstico Computarizado', desc: 'Scanner FCAN para identificar fallas con precisión en vehículos y equipos compatibles.' },
 ]
 
 export default function ServiciosHome() {
@@ -17,7 +17,10 @@ export default function ServiciosHome() {
         <div className={styles.left}>
           <p className={styles.eyebrow}>Servicios</p>
           <h2 className={styles.title}>Soluciones integrales para tu operación</h2>
-          <p className={styles.desc}>Trabajamos con los más altos estándares de calidad, seguridad y respaldo.</p>
+          <p className={styles.desc}>
+            Trabajamos con vehículos livianos, camionetas, camiones, buses, maquinaria pesada
+            y equipos de minería con los más altos estándares técnicos.
+          </p>
           <Link to="/servicios" className={styles.link}>Ver todos los servicios →</Link>
         </div>
         <div className={styles.grid}>

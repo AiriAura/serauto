@@ -9,7 +9,14 @@ const nav = [
   { label: 'Contacto',  path: '/contacto' },
 ]
 
-const servicios = ['Sistemas Eléctricos','Aire Acondicionado','Diagnóstico Electrónico','Partidores y Alternadores','Sistemas de Carga','Mantención Preventiva']
+const servicios = [
+  'Electricidad Automotriz',
+  'Aire Acondicionado',
+  'Maquinaria y Minería',
+  'Mantención Preventiva',
+  'Venta de Repuestos',
+  'Diagnóstico Computarizado',
+]
 
 export default function Footer() {
   return (
@@ -17,7 +24,10 @@ export default function Footer() {
       <div className={styles.inner}>
         <div className={styles.brand}>
           <Link to="/" className={styles.logo}>Ser<span>Auto</span> <small>LTDA</small></Link>
-          <p className={styles.tagline}>Soluciones eléctricas y de climatización para maquinaria automotriz y minera.</p>
+          <p className={styles.tagline}>
+            Soluciones eléctricas y de climatización para maquinaria automotriz y minera.
+            En terreno o en taller, donde nos necesites.
+          </p>
           <div className={styles.social}>
             <a href="#" aria-label="LinkedIn">in</a>
             <a href="#" aria-label="Instagram">ig</a>
@@ -38,7 +48,7 @@ export default function Footer() {
             <li>📍 Av. Segunda Transversal 2600, Maipú, Santiago</li>
             <li>📞 +56 2 3123 4567</li>
             <li>✉️ contacto@serauto.cl</li>
-            <li>🕐 Lun–Vie: 09:00–18:00 / Sáb: 09:00–13:00</li>
+            <li>🕐 Lun, Mar y Vie: 09:00–18:00<br/>Mié y Jue: 09:00–19:00</li>
           </ul>
         </div>
       </div>

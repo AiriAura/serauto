@@ -43,6 +43,13 @@ export default function ContactoHome() {
             <div className={styles.dato}><span>💬</span><div><strong>WhatsApp</strong><p>+56 9 1234 5678</p></div></div>
             <div className={styles.dato}><span>✉️</span><div><strong>Email</strong><p>contacto@serauto.cl</p></div></div>
             <div className={styles.dato}><span>📍</span><div><strong>Dirección</strong><p>Av. Segunda Transversal 2600, Maipú, Santiago</p></div></div>
+            <div className={styles.dato}>
+              <span>🕐</span>
+              <div>
+                <strong>Horarios</strong>
+                <p>Lun, Mar y Vie: 09:00–18:00<br/>Mié y Jue: 09:00–19:00</p>
+              </div>
+            </div>
           </div>
         </div>
         <div className={styles.right}>
