@@ -11,8 +11,13 @@ const stats = [
 
 export default function Hero() {
   return (
-    <section className={styles.hero} style={{ backgroundImage: `url(${heroBg})` }}>
-      <div className={styles.overlay} />
+    <section
+      className={styles.hero}
+      style={{ backgroundImage: `url(${heroBg})` }}
+      role="banner"
+      aria-label="Serauto LTDA - Soluciones eléctricas y de climatización automotriz"
+    >
+      <div className={styles.overlay} aria-hidden="true" />
       <div className={styles.content}>
         <p className={styles.eyebrow}>Expertos en electricidad automotriz y maquinaria</p>
         <h1 className={styles.title}>
@@ -27,10 +32,10 @@ export default function Hero() {
           <Link to="/contacto" className={styles.btnPrimary}>Cotizar ahora →</Link>
           <Link to="/servicios" className={styles.btnSecondary}>Ver servicios</Link>
         </div>
-        <div className={styles.stats}>
+        <div className={styles.stats} aria-label="Estadísticas de Serauto">
           {stats.map((s, i) => (
             <div key={i} className={styles.stat}>
-              <span className={styles.statValue}>{s.value}</span>
+              <span className={styles.statValue} aria-label={`${s.value} ${s.label}`}>{s.value}</span>
               <span className={styles.statLabel}>{s.label}</span>
             </div>
           ))}

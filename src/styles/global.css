@@ -14,7 +14,8 @@
   --color-blue-dim:   rgba(0, 87, 255, 0.12);
   --color-white:      #FFFFFF;
   --color-gray-light: #F4F6F9;
-  --color-gray-mid:   #8A8A9A;
+  --color-gray-mid:   #6B6B7B;
+  --color-gray-text:  #444455;
   --color-border:     rgba(255,255,255,0.07);
   --color-border-light: #E2E8F0;
   --font-title: 'Barlow Condensed', sans-serif;
@@ -35,6 +36,41 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; }
-a  { text-decoration: none; color: inherit; }
-button { cursor: pointer; border: none; background: none; font-family: inherit; }
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+button:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
 ul { list-style: none; }
+
+/* Skip to main content for accessibility */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--color-blue);
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus {
+  top: 0;
+}
