@@ -1,11 +1,10 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { auth } from '../../lib/firebaseAuth.js'
-import { signOut } from 'firebase/auth'
 import styles from './Admin.module.css'
 
 const navItems = [
   { path: '/admin/dashboard',    label: 'Dashboard',    icon: '📊' },
   { path: '/admin/productos',    label: 'Productos',    icon: '📦' },
+  { path: '/admin/categorias',   label: 'Categorías',   icon: '🗂️' },
   { path: '/admin/cotizaciones', label: 'Cotizaciones', icon: '📋' },
 ]
 
@@ -14,6 +13,8 @@ export function AdminLayout({ children, title }) {
   const navigate = useNavigate()
 
   const handleLogout = async () => {
+    const { auth } = await import('../../lib/firebase')
+    const { signOut } = await import('firebase/auth')
     await signOut(auth)
     navigate('/admin')
   }
@@ -67,7 +68,12 @@ export default function Dashboard() {
           <Link to="/admin/productos" className={styles.quickCard}>
             <span>📦</span>
             <strong>Gestionar productos</strong>
-            <p>Agregar, editar o desactivar repuestos del catálogo</p>
+            <p>Agregar, editar o eliminar repuestos del catálogo</p>
+          </Link>
+          <Link to="/admin/categorias" className={styles.quickCard}>
+            <span>🗂️</span>
+            <strong>Gestionar categorías</strong>
+            <p>Organizar las categorías del catálogo</p>
           </Link>
           <Link to="/admin/cotizaciones" className={styles.quickCard}>
             <span>📋</span>
