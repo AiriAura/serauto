@@ -40,6 +40,7 @@ export default function Contacto() {
           <p className={styles.heroDesc}>Completa el formulario y te contactamos a la brevedad.</p>
         </div>
       </section>
+
       <section className={styles.section}>
         <div className={styles.inner}>
           <div className={styles.formWrap}>
@@ -91,19 +92,19 @@ export default function Contacto() {
               </form>
             )}
           </div>
+
           <div className={styles.info}>
             <div className={styles.infoCard}>
               <h2 className={styles.infoTitle}>Información de contacto</h2>
               <div className={styles.datos}>
                 <div className={styles.dato}><span aria-hidden="true">📍</span><div><strong>Dirección</strong><p>Av. Segunda Transversal 2600, Maipú, Santiago</p></div></div>
-                <div className={styles.dato}><span aria-hidden="true">📞</span><div><strong>Teléfono</strong><p>+56 2 3123 4567</p></div></div>
-                <div className={styles.dato}><span aria-hidden="true">💬</span><div><strong>WhatsApp</strong><p>+56 9 1234 5678</p></div></div>
-                <div className={styles.dato}><span aria-hidden="true">✉️</span><div><strong>Email</strong><p>contacto@serauto.cl</p></div></div>
+                <div className={styles.dato}><span aria-hidden="true">📞</span><div><strong>Teléfonos</strong><p>+56 9 7774 7792<br/>+56 9 4596 9254<br/>+56 9 4282 9953</p></div></div>
+                <div className={styles.dato}><span aria-hidden="true">✉️</span><div><strong>Email</strong><p>empresa@serauto.cl</p></div></div>
                 <div className={styles.dato}>
                   <span aria-hidden="true">🕐</span>
                   <div>
                     <strong>Horarios</strong>
-                    <p>Lun, Mar y Vie: 09:00–18:00<br />Mié y Jue: 09:00–19:00</p>
+                    <p>Lun, Mar y Vie: 09:00–18:00<br/>Mié y Jue: 09:00–19:00</p>
                   </div>
                 </div>
               </div>
