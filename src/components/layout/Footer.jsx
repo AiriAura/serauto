@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import styles from './Footer.module.css'
-import logo from '../../assets/images/logo.png'
 
 const nav = [
   { label: 'Inicio',    path: '/' },
@@ -25,7 +24,7 @@ export default function Footer() {
       <div className={styles.inner}>
         <div className={styles.brand}>
           <Link to="/" aria-label="Serauto LTDA - Ir al inicio">
-            <img src={logo} alt="Serauto LTDA" className={styles.logoImg} width="180" height="55" />
+            <img src="/logo.png" alt="Serauto LTDA" className={styles.logoImg} width="180" height="55" />
           </Link>
           <p className={styles.tagline}>
             Soluciones eléctricas y de climatización para maquinaria automotriz y minera.

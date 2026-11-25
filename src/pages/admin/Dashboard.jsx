@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styles from './Admin.module.css'
 
@@ -25,7 +26,11 @@ export function AdminLayout({ children, title }) {
         <div className={styles.sidebarLogo}>Ser<span>Auto</span></div>
         <nav className={styles.nav}>
           {navItems.map(item => (
-            <Link key={item.path} to={item.path} className={`${styles.navItem} ${location.pathname === item.path ? styles.active : ''}`}>
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`${styles.navItem} ${location.pathname === item.path ? styles.active : ''}`}
+            >
               <span>{item.icon}</span>{item.label}
             </Link>
           ))}
@@ -43,21 +48,63 @@ export function AdminLayout({ children, title }) {
   )
 }
 
-const stats = [
-  { label: 'Productos activos',     value: '—', icon: '📦', color: '#0057FF' },
-  { label: 'Cotizaciones nuevas',   value: '—', icon: '📋', color: '#00D47C' },
-  { label: 'Cotizaciones este mes', value: '—', icon: '📈', color: '#FFD100' },
-  { label: 'Categorías',            value: '—', icon: '🗂️',  color: '#A855F7' },
-]
-
 export default function Dashboard() {
+  const [stats, setStats] = useState({
+    productosActivos: '—',
+    cotizacionesNuevas: '—',
+    cotizacionesMes: '—',
+    categorias: '—',
+  })
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => { fetchStats() }, [])
+
+  async function fetchStats() {
+    try {
+      const { db } = await import('../../lib/firebase')
+      const { collection, getDocs, query, where } = await import('firebase/firestore')
+
+      const [prodsSnap, cotSnap, catsSnap] = await Promise.all([
+        getDocs(query(collection(db, 'productos'), where('activo', '==', true))),
+        getDocs(collection(db, 'cotizaciones')),
+        getDocs(collection(db, 'categorias')),
+      ])
+
+      const ahora = new Date()
+      const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1)
+      const cotizaciones = cotSnap.docs.map(d => ({ id: d.id, ...d.data() }))
+      const nuevas = cotizaciones.filter(c => c.estado === 'nueva').length
+      const esMes = cotizaciones.filter(c => {
+        const fecha = c.createdAt?.toDate?.()
+        return fecha && fecha >= inicioMes
+      }).length
+
+      setStats({
+        productosActivos: prodsSnap.size,
+        cotizacionesNuevas: nuevas,
+        cotizacionesMes: esMes,
+        categorias: catsSnap.size,
+      })
+    } catch (err) {
+      console.error(err)
+    }
+    setLoading(false)
+  }
+
+  const statCards = [
+    { label: 'Productos activos',     value: stats.productosActivos,   icon: '📦', color: '#0057FF' },
+    { label: 'Cotizaciones nuevas',   value: stats.cotizacionesNuevas, icon: '📋', color: '#00D47C' },
+    { label: 'Cotizaciones este mes', value: stats.cotizacionesMes,    icon: '📈', color: '#FFD100' },
+    { label: 'Categorías',            value: stats.categorias,         icon: '🗂️', color: '#A855F7' },
+  ]
+
   return (
     <AdminLayout title="Dashboard">
       <div className={styles.statsGrid}>
-        {stats.map((s, i) => (
+        {statCards.map((s, i) => (
           <div key={i} className={styles.statCard} style={{ borderTopColor: s.color }}>
             <span className={styles.statIcon}>{s.icon}</span>
-            <span className={styles.statValue}>{s.value}</span>
+            <span className={styles.statValue}>{loading ? '...' : s.value}</span>
             <span className={styles.statLabel}>{s.label}</span>
           </div>
         ))}

@@ -2,160 +2,186 @@ import { useState, useEffect } from 'react'
 import { AdminLayout } from './Dashboard'
 import styles from './Admin.module.css'
 
-const EMPTY_CAT = { nombre: '', slug: '', icono: '', orden: 0, activa: true }
-
-export default function Categorias() {
-  const [categorias, setCategorias] = useState([])
+export default function Cotizaciones() {
+  const [cotizaciones, setCotizaciones] = useState([])
   const [loading, setLoading] = useState(true)
-  const [modal, setModal] = useState(false)
-  const [editando, setEditando] = useState(null)
-  const [form, setForm] = useState(EMPTY_CAT)
-  const [saving, setSaving] = useState(false)
-  const [confirmDelete, setConfirmDelete] = useState(null)
+  const [expandida, setExpandida] = useState(null)
 
-  useEffect(() => { fetchCategorias() }, [])
+  useEffect(() => { fetchCotizaciones() }, [])
 
-  async function fetchCategorias() {
+  async function fetchCotizaciones() {
     setLoading(true)
     try {
       const { db } = await import('../../lib/firebase')
       const { collection, getDocs, orderBy, query } = await import('firebase/firestore')
-      const snap = await getDocs(query(collection(db, 'categorias'), orderBy('orden')))
-      setCategorias(snap.docs.map(d => ({ id: d.id, ...d.data() })))
-    } catch (err) { console.error(err) }
+      const snap = await getDocs(query(collection(db, 'cotizaciones'), orderBy('createdAt', 'desc')))
+      setCotizaciones(snap.docs.map(d => ({ id: d.id, ...d.data() })))
+    } catch (err) {
+      console.error(err)
+    }
     setLoading(false)
   }
 
-  function abrirNuevo() { setEditando(null); setForm(EMPTY_CAT); setModal(true) }
-
-  function abrirEditar(c) {
-    setEditando(c.id)
-    setForm({ nombre: c.nombre || '', slug: c.slug || '', icono: c.icono || '', orden: c.orden ?? 0, activa: c.activa ?? true })
-    setModal(true)
-  }
-
-  function cerrarModal() { setModal(false); setEditando(null); setForm(EMPTY_CAT) }
-
-  function generarSlug(nombre) {
-    return nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-  }
-
-  async function guardar() {
-    if (!form.nombre) return alert('El nombre es obligatorio')
-    setSaving(true)
-    const slug = form.slug || generarSlug(form.nombre)
-    try {
-      const { db } = await import('../../lib/firebase')
-      const { collection, doc, addDoc, updateDoc } = await import('firebase/firestore')
-      if (editando) {
-        await updateDoc(doc(db, 'categorias', editando), { ...form, slug })
-      } else {
-        await addDoc(collection(db, 'categorias'), { ...form, slug })
-      }
-      cerrarModal()
-      fetchCategorias()
-    } catch (err) { console.error(err) }
-    setSaving(false)
-  }
-
-  async function eliminar(id) {
+  async function marcarVista(id) {
     const { db } = await import('../../lib/firebase')
-    const { doc, deleteDoc } = await import('firebase/firestore')
-    await deleteDoc(doc(db, 'categorias', id))
-    setConfirmDelete(null)
-    fetchCategorias()
+    const { doc, updateDoc } = await import('firebase/firestore')
+    await updateDoc(doc(db, 'cotizaciones', id), { estado: 'vista' })
+    fetchCotizaciones()
+  }
+
+  const nuevas = cotizaciones.filter(c => c.estado === 'nueva').length
+
+  function formatFecha(ts) {
+    const d = ts?.toDate?.()
+    if (!d) return '—'
+    return d.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
   }
 
   return (
-    <AdminLayout title="Categorías">
-      {confirmDelete && (
-        <div className={styles.overlay}>
-          <div className={styles.confirmBox}>
-            <h3>¿Eliminar categoría?</h3>
-            <p>Los productos de esta categoría no se eliminarán, pero quedarán sin categoría asignada.</p>
-            <div className={styles.confirmActions}>
-              <button className={styles.cancelBtn} onClick={() => setConfirmDelete(null)}>Cancelar</button>
-              <button className={styles.deleteBtn} onClick={() => eliminar(confirmDelete)}>Eliminar</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {modal && (
-        <div className={styles.overlay}>
-          <div className={styles.modalBox}>
-            <h3 className={styles.modalTitle}>{editando ? 'Editar categoría' : 'Agregar categoría'}</h3>
-            <div className={styles.modalForm}>
-              <div className={styles.modalRow}>
-                <div className={styles.modalField}>
-                  <label>Nombre *</label>
-                  <input value={form.nombre} onChange={e => setForm({...form, nombre: e.target.value, slug: generarSlug(e.target.value)})} placeholder="Ej: Alternadores" />
-                </div>
-                <div className={styles.modalField}>
-                  <label>Ícono (emoji)</label>
-                  <input value={form.icono} onChange={e => setForm({...form, icono: e.target.value})} placeholder="Ej: ⚡" />
-                </div>
-              </div>
-              <div className={styles.modalRow}>
-                <div className={styles.modalField}>
-                  <label>Slug (URL)</label>
-                  <input value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} placeholder="Ej: alternadores" />
-                </div>
-                <div className={styles.modalField}>
-                  <label>Orden</label>
-                  <input type="number" value={form.orden} onChange={e => setForm({...form, orden: parseInt(e.target.value) || 0})} />
-                </div>
-              </div>
-              <div className={styles.modalChecks}>
-                <label className={styles.checkLabel}>
-                  <input type="checkbox" checked={form.activa} onChange={e => setForm({...form, activa: e.target.checked})} />
-                  Activa (visible en el catálogo)
-                </label>
-              </div>
-            </div>
-            <div className={styles.modalActions}>
-              <button className={styles.cancelBtn} onClick={cerrarModal}>Cancelar</button>
-              <button className={styles.saveBtn} onClick={guardar} disabled={saving}>{saving ? 'Guardando...' : editando ? 'Guardar cambios' : 'Agregar categoría'}</button>
-            </div>
-          </div>
-        </div>
-      )}
-
+    <AdminLayout title="Cotizaciones">
       <div className={styles.toolbar}>
-        <span style={{color:'rgba(255,255,255,0.4)',fontSize:14}}>{categorias.length} categoría{categorias.length !== 1 ? 's' : ''}</span>
-        <button className={styles.addBtn} onClick={abrirNuevo}>+ Agregar categoría</button>
+        <p role="status" style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>
+          {nuevas} cotización{nuevas !== 1 ? 'es' : ''} nueva{nuevas !== 1 ? 's' : ''}
+        </p>
       </div>
 
       {loading ? (
-        <p style={{color:'rgba(255,255,255,0.4)'}} role="status">Cargando...</p>
+        <p style={{ color: 'rgba(255,255,255,0.4)' }} role="status">Cargando...</p>
+      ) : cotizaciones.length === 0 ? (
+        <p style={{ color: 'rgba(255,255,255,0.4)' }}>No hay cotizaciones todavía.</p>
       ) : (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th scope="col">Ícono</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Slug</th>
-              <th scope="col">Orden</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categorias.map(c => (
-              <tr key={c.id}>
-                <td style={{fontSize:24}}>{c.icono}</td>
-                <td>{c.nombre}</td>
-                <td style={{color:'rgba(255,255,255,0.4)',fontSize:13}}>{c.slug}</td>
-                <td>{c.orden}</td>
-                <td><span className={c.activa ? styles.badgeActive : styles.badgeInactive}>{c.activa ? 'Activa' : 'Inactiva'}</span></td>
-                <td>
-                  <button className={styles.actionBtn} onClick={() => abrirEditar(c)}>Editar</button>
-                  <button className={`${styles.actionBtn} ${styles.actionBtnDanger}`} onClick={() => setConfirmDelete(c.id)}>Eliminar</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        cotizaciones.map(c => {
+          const abierta = expandida === c.id
+          return (
+            <div
+              key={c.id}
+              className={styles.cotCard}
+              style={{ cursor: 'pointer', flexDirection: 'column', gap: 12 }}
+              onClick={() => setExpandida(abierta ? null : c.id)}
+            >
+              {/* Fila superior — resumen */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
+                <div className={styles.cotInfo}>
+                  <strong style={{ fontSize: 15 }}>
+                    {c.nombreCliente || c.nombre || '(sin nombre)'}
+                    {c.empresa ? ` — ${c.empresa}` : ''}
+                  </strong>
+                  <span style={{ marginTop: 2 }}>
+                    {c.email || '—'}
+                    {c.telefono ? ` · 📞 ${c.telefono}` : ''}
+                  </span>
+                  <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12, marginTop: 2 }}>
+                    {c.tipo ? `Tipo: ${c.tipo}` : ''}{c.tipo && c.createdAt ? ' · ' : ''}{formatFecha(c.createdAt)}
+                  </span>
+                </div>
+                <div className={styles.cotMeta} style={{ flexShrink: 0 }}>
+                  <span className={c.estado === 'nueva' ? styles.badgeNueva : styles.badgeVista}>
+                    {c.estado === 'nueva' ? 'Nueva' : 'Vista'}
+                  </span>
+                  <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 4 }}>
+                    {abierta ? '▲ cerrar' : '▼ ver detalle'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Detalle expandido */}
+              {abierta && (
+                <div style={{
+                  borderTop: '1px solid rgba(255,255,255,0.08)',
+                  paddingTop: 12,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8,
+                  width: '100%'
+                }}>
+                  {/* Datos de contacto */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 8 }}>
+                    <div className={styles.detalleCampo}>
+                      <span className={styles.detalleLabel}>Nombre</span>
+                      <span>{c.nombreCliente || c.nombre || '—'}</span>
+                    </div>
+                    <div className={styles.detalleCampo}>
+                      <span className={styles.detalleLabel}>Empresa</span>
+                      <span>{c.empresa || '—'}</span>
+                    </div>
+                    <div className={styles.detalleCampo}>
+                      <span className={styles.detalleLabel}>Teléfono</span>
+                      <span>
+                        {c.telefono
+                          ? <a href={`tel:${c.telefono}`} style={{ color: '#0057FF' }}>{c.telefono}</a>
+                          : '—'}
+                      </span>
+                    </div>
+                    <div className={styles.detalleCampo}>
+                      <span className={styles.detalleLabel}>Email</span>
+                      <span>
+                        {c.email
+                          ? <a href={`mailto:${c.email}`} style={{ color: '#0057FF' }}>{c.email}</a>
+                          : '—'}
+                      </span>
+                    </div>
+                    <div className={styles.detalleCampo}>
+                      <span className={styles.detalleLabel}>Tipo</span>
+                      <span>{c.tipo || '—'}</span>
+                    </div>
+                    <div className={styles.detalleCampo}>
+                      <span className={styles.detalleLabel}>Fecha</span>
+                      <span>{formatFecha(c.createdAt)}</span>
+                    </div>
+                  </div>
+
+                  {/* Mensaje completo */}
+                  {c.mensaje && (
+                    <div className={styles.detalleCampo} style={{ marginTop: 4 }}>
+                      <span className={styles.detalleLabel}>Mensaje</span>
+                      <p style={{
+                        margin: 0,
+                        color: 'rgba(255,255,255,0.75)',
+                        lineHeight: 1.6,
+                        whiteSpace: 'pre-wrap'
+                      }}>{c.mensaje}</p>
+                    </div>
+                  )}
+
+                  {/* Acciones */}
+                  <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+                    {c.telefono && (
+                      <a
+                        href={`https://wa.me/${c.telefono.replace(/\D/g, '')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.verBtn}
+                        style={{ background: '#25D366', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        WhatsApp
+                      </a>
+                    )}
+                    {c.email && (
+                      <a
+                        href={`mailto:${c.email}`}
+                        className={styles.verBtn}
+                        style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4 }}
+                        onClick={e => e.stopPropagation()}
+                      >
+                        Responder email
+                      </a>
+                    )}
+                    {c.estado === 'nueva' && (
+                      <button
+                        className={styles.verBtn}
+                        style={{ background: 'rgba(255,255,255,0.1)' }}
+                        onClick={e => { e.stopPropagation(); marcarVista(c.id) }}
+                      >
+                        Marcar vista
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })
       )}
     </AdminLayout>
   )

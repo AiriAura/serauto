@@ -45,15 +45,21 @@
 .actionBtn:hover { border-color: var(--color-blue); color: var(--color-blue); }
 .actionBtnDanger:hover { border-color: #FF4560 !important; color: #FF4560 !important; }
 
-.cotCard { background: #111118; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.cotCard { background: #111118; border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; transition: border-color 0.2s; }
 .cotCard:hover { border-color: rgba(255,255,255,0.15); }
+.cotInfo { display: flex; flex-direction: column; gap: 2px; }
 .cotInfo strong { display: block; font-size: 15px; color: #fff; margin-bottom: 4px; }
 .cotInfo span { font-size: 13px; color: rgba(255,255,255,0.4); }
-.cotMeta { display: flex; align-items: center; gap: 12px; }
+.cotMeta { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
 .badgeNueva { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; background: rgba(0,87,255,0.15); color: var(--color-blue); }
 .badgeVista { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35); }
-.verBtn { font-size: 13px; font-weight: 600; color: #fff; background: rgba(255,255,255,0.08); padding: 7px 16px; border-radius: 6px; }
+.verBtn { font-size: 13px; font-weight: 600; color: #fff; background: rgba(255,255,255,0.08); padding: 7px 16px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
 .verBtn:hover { background: rgba(255,255,255,0.14); }
+
+/* Detalle expandido de cotizaciones */
+.detalleCampo { display: flex; flex-direction: column; gap: 4px; }
+.detalleLabel { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.3); letter-spacing: 0.5px; text-transform: uppercase; }
+.detalleCampo span, .detalleCampo p { font-size: 14px; color: rgba(255,255,255,0.75); }
 
 /* Modal */
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 24px; }
